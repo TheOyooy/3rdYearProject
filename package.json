@@ -1,0 +1,18 @@
+{
+  "name": "custom-project",
+  "version": "200.4.4",
+  "description": "A thing that hopefully works",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "electron": "^8.0.3",
+    "jQuery": "^1.7.4",
+    "jquery": "^3.4.1",
+    "popper": "^1.0.1"
+  }
+}
