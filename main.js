@@ -2,25 +2,61 @@ const electron = require('electron');
 const url = require('url');
 const path = require('path');
 
-const {app, BrowserWindow, Menu, ipcMain} = electron
+const {app, BrowserWindow, Menu, ipcMain, screen} = electron
 
 let mainWindow;
 let addWindow;
 
 app.on('ready', function(){
-	mainWindow = new BrowserWindow({
+    const { width, height } = screen.getPrimaryDisplay().workAreaSize
+    graphWindow = new BrowserWindow({
+		width,
+		height,
+		//webPreferences:{
+		//	nodeIntegration: true
+		//}
+	});
+	graphWindow.loadURL(url.format({
+		pathname: path.join(__dirname, 'editor/index.html'),
+		protocol: 'file',
+		slashes: true,
+		node: {
+			__dirname: false,
+			__filename: false
+		}
+    }));
+    
+    ruleWindow = new BrowserWindow({
+		width,
+		height,
+		//webPreferences:{
+		//	nodeIntegration: true
+		//}
+	});
+	ruleWindow.loadURL(url.format({
+		pathname: path.join(__dirname, 'editor/rule/index.html'),
+		protocol: 'file',
+		slashes: true,
+		node: {
+			__dirname: false,
+			__filename: false
+		}
+	}));
+    
+
+	controlWindow = new BrowserWindow({
 		webPreferences:{
 			nodeIntegration: true
 		}
 	});
-	mainWindow.loadURL(url.format({
-		pathname: path.join(__dirname, 'mainWindow.HTML'),
+	controlWindow.loadURL(url.format({
+		pathname: path.join(__dirname, 'control/controlWindow.html'),
 		protocol: 'file',
 		slashes: true
 	}));
 
 	//Quit app when closed
-	mainWindow.on('closed', function(){
+	controlWindow.on('closed', function(){
 		app.quit();
 	})
 
