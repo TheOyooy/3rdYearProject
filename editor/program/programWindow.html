@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Edit Program</title>
+        <script>window.$ = window.jQuery = require('jquery');</script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <style>
+           
+            .container{
+                padding: 30px;
+                padding-bottom: 5%;
+                max-width: 960px;
+                width: 96%;
+                margin: auto;
+            }
+            .header{
+                padding-left: 30px;
+            }
+            .body{
+                list-style-type: none;
+                text-align: left;
+                padding: 0;
+                
+            }
+            .body li{
+                display: inline-block;
+                padding-right: 10%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header"><h3>Edit Program</h3></div>
+            <ul class="body">
+                <li><button type="button" class="btn btn-primary" id="EditGraph">Load</button></li>
+                <li><button type="button" class="btn btn-primary" id="EditGraph">Save</button></li>
+            </ul>
+        </div>
+        <div class="container">
+            <textarea id = "myTextArea"
+                rows = "15"
+                cols = "80">Your text here</textarea>
+        </div>
+
+        <script type="text/javascript" src="control.js"></script>
+    </body>
+</html>

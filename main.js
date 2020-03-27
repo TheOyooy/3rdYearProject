@@ -4,47 +4,15 @@ const path = require('path');
 
 const {app, BrowserWindow, Menu, ipcMain, screen} = electron
 
-let mainWindow;
-let addWindow;
+
 
 app.on('ready', function(){
     const { width, height } = screen.getPrimaryDisplay().workAreaSize
-    graphWindow = new BrowserWindow({
-		width,
-		height,
-		//webPreferences:{
-		//	nodeIntegration: true
-		//}
-	});
-	graphWindow.loadURL(url.format({
-		pathname: path.join(__dirname, 'editor/index.html'),
-		protocol: 'file',
-		slashes: true,
-		node: {
-			__dirname: false,
-			__filename: false
-		}
-    }));
-    
-    ruleWindow = new BrowserWindow({
-		width,
-		height,
-		//webPreferences:{
-		//	nodeIntegration: true
-		//}
-	});
-	ruleWindow.loadURL(url.format({
-		pathname: path.join(__dirname, 'editor/rule/index.html'),
-		protocol: 'file',
-		slashes: true,
-		node: {
-			__dirname: false,
-			__filename: false
-		}
-	}));
     
 
 	controlWindow = new BrowserWindow({
+		width: 620,
+		height: 600,
 		webPreferences:{
 			nodeIntegration: true
 		}
@@ -54,6 +22,67 @@ app.on('ready', function(){
 		protocol: 'file',
 		slashes: true
 	}));
+
+	ipcMain.on('open-graph-window', (event) => {
+		graphWindow = new BrowserWindow({
+			width,
+			height,
+			//webPreferences:{
+			//	nodeIntegration: true
+			//}
+		});
+		graphWindow.loadURL(url.format({
+			pathname: path.join(__dirname, 'editor/index.html'),
+			protocol: 'file',
+			slashes: true,
+			node: {
+				__dirname: false,
+				__filename: false
+			}
+		}));
+	});
+
+	ipcMain.on('open-program-window', (event) => {
+		ruleWindow = new BrowserWindow({
+			width,
+			height,
+			//webPreferences:{
+			//	nodeIntegration: true
+			//}
+		});
+		ruleWindow.loadURL(url.format({
+			pathname: path.join(__dirname, 'editor/program/programWindow.html'),
+			protocol: 'file',
+			slashes: true,
+			node: {
+				__dirname: false,
+				__filename: false
+			}
+		}));
+
+	});
+
+	ipcMain.on('open-rule-window', (event) => {
+		ruleWindow = new BrowserWindow({
+			width,
+			height,
+			//webPreferences:{
+			//	nodeIntegration: true
+			//}
+		});
+		ruleWindow.loadURL(url.format({
+			pathname: path.join(__dirname, 'editor/rule/index.html'),
+			protocol: 'file',
+			slashes: true,
+			node: {
+				__dirname: false,
+				__filename: false
+			}
+		}));
+
+	});
+
+	
 
 	//Quit app when closed
 	controlWindow.on('closed', function(){
@@ -66,37 +95,6 @@ app.on('ready', function(){
 });
 
 
-//Handle create add window
-function createAddWindow(){
-	addWindow = new BrowserWindow({
-		width: 700,
-		height: 800,
-		title:'Add Shopping List Item',
-		webPreferences:{
-			nodeIntegration: true
-		}
-	});
-	addWindow.loadURL(url.format({
-		pathname: path.join(__dirname, 'editor/index.HTML'),
-		protocol: 'file',
-		slashes: true,
-		node: {
-			__dirname: false,
-			__filename: false
-		}
-	}));
-	//Garbage collection handle
-	addWindow.on('close', function(){
-		addWindow = null;
-	})
-}
-
-//Catch item:add
-ipcMain.on('item:add', function(e, item){
-	console.log(item);
-	mainWindow.webContents.send('item:add', item);
-	addWindow.close();
-});
 
 //Create menu template
 const mainMenuTemplate = [
