@@ -8,10 +8,10 @@
            
             .container{
                 padding: 30px;
-                padding-bottom: 5%;
                 max-width: 960px;
                 width: 96%;
                 margin: auto;
+                align-self: left;
             }
             .header{
                 padding-left: 30px;
@@ -26,22 +26,26 @@
                 display: inline-block;
                 padding-right: 10%;
             }
+            .text{
+                text-align: center;
+            }
         </style>
     </head>
     <body>
         <div class="container">
-            <div class="header"><h3>Edit Program</h3></div>
             <ul class="body">
+                <li><h3>Edit Program</h3></li>
                 <li><button type="button" class="btn btn-primary" id="EditGraph">Load</button></li>
                 <li><button type="button" class="btn btn-primary" id="EditGraph">Save</button></li>
             </ul>
         </div>
-        <div class="container">
-            <textarea id = "myTextArea"
-                rows = "15"
+        <div class="text">
+            <textarea id = "ProgramText"
+                rows = "30"
                 cols = "80">Your text here</textarea>
         </div>
 
-        <script type="text/javascript" src="control.js"></script>
+        <script type="text/javascript" src="program.js"></script>
+        <!--<iframe onload="loadText()" src="program.js"></iframe>-->
     </body>
 </html>

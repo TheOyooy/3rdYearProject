@@ -44,11 +44,11 @@ app.on('ready', function(){
 
 	ipcMain.on('open-program-window', (event) => {
 		ruleWindow = new BrowserWindow({
-			width,
-			height,
-			//webPreferences:{
-			//	nodeIntegration: true
-			//}
+			width: 900,
+			height: 1200,
+			webPreferences:{
+				nodeIntegration: true
+			}
 		});
 		ruleWindow.loadURL(url.format({
 			pathname: path.join(__dirname, 'editor/program/programWindow.html'),
