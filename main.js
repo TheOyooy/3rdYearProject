@@ -2,7 +2,7 @@ const electron = require('electron');
 const url = require('url');
 const path = require('path');
 
-const {app, BrowserWindow, Menu, ipcMain, screen} = electron
+const {app, BrowserWindow, Menu, ipcMain, ipcRenderer, screen} = electron
 
 
 
@@ -22,6 +22,9 @@ app.on('ready', function(){
 		protocol: 'file',
 		slashes: true
 	}));
+	controlWindow.webContents.on('did-finish-load', () => {
+		controlWindow.webContents.send('project-variables', "null", "null");
+	});
 
 	ipcMain.on('open-graph-window', (event) => {
 		graphWindow = new BrowserWindow({
@@ -82,6 +85,25 @@ app.on('ready', function(){
 
 	});
 
+	ipcMain.on('open-project', (event, projectPath, projectName) => {
+		controlWindow = new BrowserWindow({
+			width: 620,
+			height: 580,
+			webPreferences:{
+				nodeIntegration: true
+			}
+		});
+		controlWindow.loadURL(url.format({
+			pathname: path.join(__dirname, 'control/controlWindow.html'),
+			protocol: 'file',
+			slashes: true
+		}));
+		controlWindow.webContents.on('did-finish-load', () => {
+			controlWindow.webContents.send('project-variables', projectPath, projectName);
+		});
+
+	});
+
 	
 
 	//Quit app when closed
@@ -95,21 +117,27 @@ app.on('ready', function(){
 });
 
 
-
 //Create menu template
 const mainMenuTemplate = [
 	{
 		label:'File',
 		submenu:[
 			{
-				label: 'Add Item',
+				label: 'New Project',
 				click(){
-					createAddWindow();
+					newProject();
 				}
 
 			},
 			{
-				label: 'Clear Items',
+				label: 'Open Project',
+				click(){
+					openProject();
+				}
+
+			},
+			{
+				label: 'Change Compiler Location',
 				click(){
 					mainWindow.webContents.send('item:clear');
 				}
@@ -127,10 +155,10 @@ const mainMenuTemplate = [
 
 ];
 
-//if mac, add empty object ot menu
+//if mac, add empty object to menu
 if(process.platform == 'darwin'){
 	mainMenuTemplate.unshift({});
-}
+};
 
 //Add developer tools item if not in prod
 if(process.env.NODE_ENV !== 'production'){
@@ -150,4 +178,23 @@ if(process.env.NODE_ENV !== 'production'){
 			}
 		]
 	})
+};
+
+function newProject(){
+	newProjectWindow = new BrowserWindow({
+		width: 470,
+		height: 400,
+		webPreferences:{
+			nodeIntegration: true
+		}
+	});
+	newProjectWindow.loadURL(url.format({
+		pathname: path.join(__dirname, 'control/newProject.html'),
+		protocol: 'file',
+		slashes: true,
+		node: {
+			__dirname: false,
+			__filename: false
+		}
+	}));
 }

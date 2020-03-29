@@ -1,7 +1,7 @@
 {
-  "name": "custom-project",
-  "version": "200.4.4",
-  "description": "A thing that hopefully works",
+  "name": "GP2-IDE",
+  "version": "1.0.0",
+  "description": "An integrated development environment for GP 2",
   "main": "main.js",
   "scripts": {
     "start": "electron ."

@@ -17,6 +17,11 @@ $( document ).ready(function(){
 	$('#EditRule').on('click',function(){
 		ipcRenderer.send('open-rule-window');
 	});
+
+	ipcRenderer.on('project-variables', function (event, projectPath, projectName) {
+		document.getElementById("ProjectName").innerHTML = projectName;
+		document.getElementById("ProjectLocation").innerHTML = projectPath;
+	});
 });
 
 
