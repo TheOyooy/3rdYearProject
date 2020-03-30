@@ -50,7 +50,7 @@ $( document ).ready(function(){
 			};
 		});
 		alert("Project Created");
-		ipcRenderer.send('open-project', x, document.getElementById("ProjectName").value);
+		ipcRenderer.send('open-project', x);
 
 
     });

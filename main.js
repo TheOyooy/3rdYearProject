@@ -2,7 +2,7 @@ const electron = require('electron');
 const url = require('url');
 const path = require('path');
 
-const {app, BrowserWindow, Menu, ipcMain, ipcRenderer, screen} = electron
+const {app, BrowserWindow, Menu, ipcMain, screen} = electron
 
 
 
@@ -23,7 +23,7 @@ app.on('ready', function(){
 		slashes: true
 	}));
 	controlWindow.webContents.on('did-finish-load', () => {
-		controlWindow.webContents.send('project-variables', "null", "null");
+		controlWindow.webContents.send('project-variables', "No project selected");
 	});
 
 	ipcMain.on('open-graph-window', (event) => {
@@ -45,7 +45,7 @@ app.on('ready', function(){
 		}));
 	});
 
-	ipcMain.on('open-program-window', (event) => {
+	ipcMain.on('open-program-window', (event, projectPath) => {
 		ruleWindow = new BrowserWindow({
 			width: 900,
 			height: 1200,
@@ -62,6 +62,9 @@ app.on('ready', function(){
 				__filename: false
 			}
 		}));
+		ruleWindow.webContents.on('did-finish-load', () => {
+			ruleWindow.webContents.send('project-path', projectPath);
+		});
 
 	});
 
@@ -85,23 +88,9 @@ app.on('ready', function(){
 
 	});
 
-	ipcMain.on('open-project', (event, projectPath, projectName) => {
-		controlWindow = new BrowserWindow({
-			width: 620,
-			height: 580,
-			webPreferences:{
-				nodeIntegration: true
-			}
-		});
-		controlWindow.loadURL(url.format({
-			pathname: path.join(__dirname, 'control/controlWindow.html'),
-			protocol: 'file',
-			slashes: true
-		}));
-		controlWindow.webContents.on('did-finish-load', () => {
-			controlWindow.webContents.send('project-variables', projectPath, projectName);
-		});
-
+	ipcMain.on('open-project', (event, projectPath) => {
+		controlWindow.webContents.send('project-variables', projectPath);
+		newProjectWindow.close();
 	});
 
 	
@@ -197,4 +186,9 @@ function newProject(){
 			__filename: false
 		}
 	}));
-}
+};
+
+function openProject(){
+	controlWindow.webContents.send('open-project');
+
+};
