@@ -9,6 +9,10 @@ $( document ).ready(function(){
     $('#EditGraph').on('click',function(){
 		ipcRenderer.send('open-graph-window');
 	});
+
+	$('#EditGraphGP2').on('click',function(){
+		ipcRenderer.send('open-graph-gp2', document.getElementById("ProjectLocation").innerHTML);
+	});
 	
 	$('#EditProgram').on('click',function(){
 		ipcRenderer.send('open-program-window', document.getElementById("ProjectLocation").innerHTML);

@@ -45,6 +45,29 @@ app.on('ready', function(){
 		}));
 	});
 
+	ipcMain.on('open-graph-gp2', (event, projectPath) => {
+		graphCodeWindow = new BrowserWindow({
+			width,
+			height,
+			webPreferences:{
+				nodeIntegration: true
+			}
+		});
+		graphCodeWindow.loadURL(url.format({
+			pathname: path.join(__dirname, 'editor/gp2Code/graphCodeWindow.html'),
+			protocol: 'file',
+			slashes: true,
+			node: {
+				__dirname: false,
+				__filename: false
+			}
+		}));
+		graphCodeWindow.webContents.on('did-finish-load', () => {
+			graphCodeWindow.webContents.send('project-path', projectPath);
+		});
+
+	});
+
 	ipcMain.on('open-program-window', (event, projectPath) => {
 		ruleWindow = new BrowserWindow({
 			width: 900,
