@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>New Rule</title>
+        <script>window.$ = window.jQuery = require('jquery');</script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <style>
+           
+            .container{
+                padding: 30px;
+                padding-bottom: 5%;
+                max-width: 960px;
+                width: 96%;
+                margin: auto;
+            }
+            .header{
+                padding-left: 30px;
+            }
+            .body{
+                list-style-type: none;
+                text-align: left;
+                padding: 0;
+                
+            }
+            .body li{
+                display: inline-block;
+                padding-right: 4px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header"><h3>Name</h3></div>
+            <ul class="body">
+                <li><input type="text" id=RuleName></input></li>
+            </ul>
+        </div>
+        <div class="container">
+            <ul class="body">
+                <li><button type="button" class="btn btn-primary" id="CreateRule">Create Rule</button></li>
+            </ul>
+        </div>
+
+
+        <script type="text/javascript" src="newRule.js"></script>
+    </body>
+</html>

@@ -111,6 +111,63 @@ app.on('ready', function(){
 
 	});
 
+	ipcMain.on('open-rule-gp2', (event, projectPath, ruleName) => {
+		ruleCodeWindow = new BrowserWindow({
+			width,
+			height,
+			webPreferences:{
+				nodeIntegration: true
+			}
+		});
+		ruleCodeWindow.loadURL(url.format({
+			pathname: path.join(__dirname, 'editor/gp2Code/ruleCodeWindow.html'),
+			protocol: 'file',
+			slashes: true,
+			node: {
+				__dirname: false,
+				__filename: false
+			}
+		}));
+		ruleCodeWindow.webContents.on('did-finish-load', () => {
+			ruleCodeWindow.webContents.send('project-path', projectPath, ruleName);
+		});
+
+	});
+
+	ipcMain.on('new-rule-window', (event, projectPath) => {
+		newRuleWindow = new BrowserWindow({
+			width: 470,
+			height: 400,
+			webPreferences:{
+				nodeIntegration: true
+			}
+		});
+		newRuleWindow.loadURL(url.format({
+			pathname: path.join(__dirname, 'editor/rule/newRule.html'),
+			protocol: 'file',
+			slashes: true,
+			node: {
+				__dirname: false,
+				__filename: false
+			}
+		}));
+		newRuleWindow.webContents.on('did-finish-load', () => {
+			newRuleWindow.webContents.send('project-path', projectPath);
+		});
+
+	});
+
+	ipcMain.on('open-project', (event, projectPath) => {
+		controlWindow.webContents.send('project-variables', projectPath);
+		newProjectWindow.close();
+	});
+
+	ipcMain.on('new-rule', (event) => {
+		newRuleWindow.close();
+		controlWindow.webContents.send('update-rules');
+
+	});
+
 	ipcMain.on('open-project', (event, projectPath) => {
 		controlWindow.webContents.send('project-variables', projectPath);
 		newProjectWindow.close();

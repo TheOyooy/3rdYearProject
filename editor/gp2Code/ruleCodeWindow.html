@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Edit Graph</title>
+        <script>window.$ = window.jQuery = require('jquery');</script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <style>
+           
+            .container{
+                padding: 30px;
+                max-width: 960px;
+                width: 96%;
+                margin: auto;
+                align-self: left;
+            }
+            .header{
+                padding-left: 30px;
+            }
+            .body{
+                list-style-type: none;
+                text-align: left;
+                padding: 0;
+                
+            }
+            .body li{
+                display: inline-block;
+                padding-right: 10%;
+            }
+            .text{
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <ul class="body">
+                <li><h3>Edit Rule</h3></li>
+                <li><button type="button" class="btn btn-primary" id="Load">Load</button></li>
+                <li><button type="button" class="btn btn-primary" id="Save">Save</button></li>
+            </ul>
+        </div>
+        <div class="text">
+            <textarea id = "RuleCode"
+                rows = "30"
+                cols = "90"></textarea>
+        </div>
+
+        <script type="text/javascript" src="ruleCode.js"></script>
+        <!--<iframe onload="loadText()" src="program.js"></iframe>-->
+    </body>
+</html>

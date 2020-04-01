@@ -44,7 +44,7 @@ $( document ).ready(function(){
 				return console.log(err);
 			};
 		});
-		fs.writeFile(x+"/Control.txt", "", function(err) {
+		fs.writeFile(x+"/RuleList.txt", "", function(err) {
 			if(err) {
 				return console.log(err);
 			};

@@ -6,7 +6,7 @@ const fs = require('fs');
 const {ipcRenderer} = electron;
 
 var fileLocation;
-
+var rule;
 
 
 $( document ).ready(function(){
@@ -20,7 +20,7 @@ $( document ).ready(function(){
 					return;
 				}
 				programText = data.toString();
-				document.getElementById('GraphCode').innerHTML = programText;
+				document.getElementById('RuleCode').innerHTML = programText;
 			});
 			
 		  }).catch(err => {
@@ -30,22 +30,23 @@ $( document ).ready(function(){
 	});
 	
 	$('#Save').on('click',function(){
-		fs.writeFile(fileLocation + "/Graph.host", document.getElementById("GraphCode").value, (err) => {
+		fs.writeFile(fileLocation + "/" + rule + ".rule", document.getElementById("RuleCode").value, (err) => {
 			if(err){
 				alert("An error ocurred saving the file "+ err.message)
 			}
-			alert("The file has been succesfully saved to: " + fileLocation + "/Graph.host");
+			alert("The file has been succesfully saved to: " + fileLocation + "/" + rule + ".rule");
 		});
 	});
-	ipcRenderer.on('project-path', function (event, projectPath) {
+	ipcRenderer.on('project-path', function (event, projectPath, ruleName) {
 		fileLocation = projectPath;
-		var programText = fs.readFile(fileLocation + "/Graph.host", 'utf-8', (err, data) => {
+		rule = ruleName;
+		var programText = fs.readFile(fileLocation + "/" + rule + ".rule", 'utf-8', (err, data) => {
 			if(err){
 				alert("An error ocurred reading the file :" + err.message);
 				return;
 			}
 			programText = data.toString();
-			document.getElementById('GraphCode').innerHTML = programText;
+			document.getElementById('RuleCode').innerHTML = programText;
 		});
 	});
 });
