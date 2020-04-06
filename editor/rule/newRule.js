@@ -33,7 +33,6 @@ $( document ).ready(function(){
 
 	ipcRenderer.on('project-path', function (event, projectPath) {
 		fileLocation = projectPath;
-		alert("We got the path")
 	});
 
 });

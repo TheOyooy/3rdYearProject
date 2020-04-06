@@ -11,7 +11,7 @@ app.on('ready', function(){
     
 
 	controlWindow = new BrowserWindow({
-		width: 620,
+		width: 800,
 		height: 600,
 		webPreferences:{
 			nodeIntegration: true
@@ -70,8 +70,8 @@ app.on('ready', function(){
 
 	ipcMain.on('open-program-window', (event, projectPath) => {
 		ruleWindow = new BrowserWindow({
-			width: 900,
-			height: 1200,
+			width,
+			height,
 			webPreferences:{
 				nodeIntegration: true
 			}
@@ -157,10 +157,6 @@ app.on('ready', function(){
 
 	});
 
-	ipcMain.on('open-project', (event, projectPath) => {
-		controlWindow.webContents.send('project-variables', projectPath);
-		newProjectWindow.close();
-	});
 
 	ipcMain.on('new-rule', (event) => {
 		newRuleWindow.close();

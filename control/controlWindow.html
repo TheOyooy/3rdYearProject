@@ -13,6 +13,14 @@
                 width: 96%;
                 margin: auto;
             }
+            .column{
+                float: left;
+                width: 50%
+            }
+            .path{
+                padding: 5px;
+                width: 96%;
+            }
             .header{
                 padding-left: 30px;
             }
@@ -25,41 +33,59 @@
             .body li{
                 display: inline-block;
                 padding-right: 7%;
+                padding-bottom: 5px;
             }
         </style>
     </head>
     <body>
-        <div class="container">
+        <div class="path">
             <ul class="body">
-                <li id="ProjectLocation">Test 1</li>
+                <li id="ProjectLocation">Project Loading Error</li>
             </ul>
         </div>
-        <div class="container">
-            <div class="header"><h3>Graph</h3></div>
-            <ul class="body">
-                <li><button type="button" class="btn btn-primary" id="EditGraph">Edit Graph</button></li>
-                <li><button type="button" class="btn btn-primary" id="EditGraphGP2">Edit GP 2 Description</button></li>
-            </ul>
+        <div class="column">
+        
+            <div class="container">
+                <div class="header"><h3>Graph</h3></div>
+                <ul class="body">
+                    <li><button type="button" class="btn btn-primary" id="EditGraphGP2">Edit GP 2 Description</button></li>
+                </ul>
+            </div>
+            <div class="container">
+                <div class="header"><h3>Program</h3></div>
+                <ul class="body">
+                    <li><button type="button" class="btn btn-primary" id="EditProgram">Edit Program</button></li>
+                </ul>
+            </div>
+            <div class="container">
+                <div class="header"><h3>Rules</h3></div>
+                <ul class="body">
+                    <li><select id="RuleName">
+                            <option value="blank"></option>
+                    </select></li>
+                    <li><button type="button" class="btn btn-primary" id="EditRuleGP2">Edit Rule</button></li>
+                    <li><button type="button" class="btn btn-primary" id="NewRule">New Rule</button></li>
+                    <li><button type="button" class="btn btn-primary" id="DeleteRule">Delete Rule</button></li>
+                </ul>
+            </div>
         </div>
-        <div class="container">
-            <div class="header"><h3>Program</h3></div>
-            <ul class="body">
-                <li><button type="button" class="btn btn-primary" id="EditProgram">Edit Program</button></li>
-            </ul>
+        <div class="column">
+            <div class="container">
+                <div class="header"><h3>Visual Editors</h3></div>
+                <ul class="body">
+                    <li><button type="button" class="btn btn-primary" id="EditGraph">Graph Editor</button></li>
+                    <li><button type="button" class="btn btn-primary" id="EditRule">Rule Editor</button></li>
+                </ul>
+            </div>
+            <div class="container">
+                <div class="header"><h3>Control</h3></div>
+                <ul class="body">
+                    <li><button type="button" class="btn btn-primary" id="Build">Build</button></li>
+                    <li><button type="button" class="btn btn-primary" id="Run">Run</button></li>
+                </ul>
+            </div>
         </div>
-        <div class="container">
-            <div class="header"><h3>Rules</h3></div>
-            <ul class="body">
-                <li><select id="RuleName">
-                        <option value="test 1">test 1</option>
-                        <option value="test 2"> test 2</option>
-                  </select></li>
-                <li><button type="button" class="btn btn-primary" id="EditRule">Edit Rule</button></li>
-                <li><button type="button" class="btn btn-primary" id="EditRuleGP2">Edit GP 2 Rule</button></li>
-                <li><button type="button" class="btn btn-primary" id="NewRule">New Rule</button></li>
-                <li><button type="button" class="btn btn-primary" id="DeleteRule">Delete Rule</button></li>
-            </ul>
-        </div>
+
 
         <script type="text/javascript" src="control.js"></script>
     </body>

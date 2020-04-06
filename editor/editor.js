@@ -1874,19 +1874,19 @@ function _Platform_initialize(flagDecoder, args, init, update, subscriptions, st
 	var result = A2(_Json_run, flagDecoder, _Json_wrap(args ? args['flags'] : undefined));
 	elm$core$Result$isOk(result) || _Debug_crash(2 /**/, _Json_errorToString(result.a) /**/);
 	var managers = {};
-	var initPair = init(result.a);
-	var model = initPair.a;
+	result = init(result.a);
+	var model = result.a;
 	var stepper = stepperBuilder(sendToApp, model);
 	var ports = _Platform_setupEffects(managers, sendToApp);
 
 	function sendToApp(msg, viewMetadata)
 	{
-		var pair = A2(update, msg, model);
-		stepper(model = pair.a, viewMetadata);
-		_Platform_enqueueEffects(managers, pair.b, subscriptions(model));
+		result = A2(update, msg, model);
+		stepper(model = result.a, viewMetadata);
+		_Platform_enqueueEffects(managers, result.b, subscriptions(model));
 	}
 
-	_Platform_enqueueEffects(managers, initPair.b, subscriptions(model));
+	_Platform_enqueueEffects(managers, result.b, subscriptions(model));
 
 	return ports ? { ports: ports } : {};
 }
@@ -5655,6 +5655,7 @@ var author$project$Editor$Graph$init = F3(
 			model,
 			elm$core$Platform$Cmd$batch(commands));
 	});
+var elm$core$Debug$log = _Debug_log;
 var elm$core$Platform$Cmd$map = _Platform_map;
 var elm_community$graph$Graph$Graph = function (a) {
 	return {$: 'Graph', a: a};
@@ -5663,6 +5664,7 @@ var elm_community$intdict$IntDict$Empty = {$: 'Empty'};
 var elm_community$intdict$IntDict$empty = elm_community$intdict$IntDict$Empty;
 var elm_community$graph$Graph$empty = elm_community$graph$Graph$Graph(elm_community$intdict$IntDict$empty);
 var author$project$Main$init = function (_n0) {
+	var dummy = elm$core$Debug$log('AAAAAA');
 	var _n1 = A3(author$project$Editor$Graph$init, elm_community$graph$Graph$empty, 'host', true);
 	var editorModel = _n1.a;
 	var editorCmd = _n1.b;
@@ -13867,7 +13869,7 @@ var author$project$Editor$Graph$getDim = F2(
 								}))),
 					elm_community$graph$Graph$nodes(graph))));
 		var idealWidth = A2(elm$core$Basics$max, maxX - minX, 550);
-		var idealHeight = A2(elm$core$Basics$max, maxY - minY, 1000);
+		var idealHeight = A2(elm$core$Basics$max, maxY - minY, 550);
 		return {
 			center: {x: (minX + maxX) / 2, y: (minY + maxY) / 2},
 			height: idealHeight + 200,
