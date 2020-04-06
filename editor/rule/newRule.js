@@ -24,7 +24,6 @@ $( document ).ready(function(){
 				return console.log(err);
 			};
 		});
-		alert('Rule Created at:' + fileLocation + "/" + ruleName + ".rule");
 		ipcRenderer.send('new-rule')
 
 

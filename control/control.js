@@ -76,6 +76,82 @@ $( document ).ready(function(){
 		console.log("File succesfully deleted");
 	});
 
+	$('#Build').on('click',function(){
+		
+		//Promise to get the program code and store it in completeProgram
+		let getProgram = new Promise ((resolve,reject) => {
+			fs.readFile(document.getElementById("ProjectLocation").innerHTML + "/Program.txt", 'utf-8', (err, data) => {
+				if(err){
+					alert("An error ocurred fetching the program:" + err.message);
+					reject();
+					return;
+				}
+				completeProgram = data.toString();
+				resolve();
+			});
+		});
+
+		//Promise to get all of the rules and add it to the end of completeProgram
+		let getRules = new Promise ((resolve,reject) => {
+			fs.readFile(document.getElementById("ProjectLocation").innerHTML + "/RuleList.txt", 'utf-8', (err, data) => {
+				if(err){
+					alert("An error ocurred fetching the program:" + err.message);
+					reject();
+					return;
+				}
+				rules = data.toString().split("\n");
+				
+				
+				//Sets up a collection of promises to read in each rule and combine them together
+				promises = []; 
+				rulesCombined = "";
+				for( var i = 0; i < rules.length - 1; i++){ 
+					promises.push(readARule(rules[i]));	
+				};
+				//Once these rules have been read and combined, add those to the end of completeProgram
+				Promise.all(promises).then(() => {
+					completeProgram = completeProgram.concat("\n\n", rulesCombined);
+					resolve(); 
+				}).catch((e) => {
+
+    			});
+
+			});	
+				
+		});
+
+		var readARule = function(ruleName) {
+			return new Promise(function(resolve, reject) {
+				fs.readFile(document.getElementById("ProjectLocation").innerHTML + "/" + ruleName + ".rule", 'utf-8', (err, ruleText) => {
+					//alert(ruleText);
+					rulesCombined = rulesCombined.concat("\n\n", ruleText.toString());
+					
+					resolve();
+
+				});
+			});
+		  }
+		
+		//Get the program code, then the rules, then write it to Program.gp2
+		getProgram.then(() => {
+			getRules.then(() => {
+				fs.writeFile(document.getElementById("ProjectLocation").innerHTML + "/Program.gp2" , completeProgram, function(err) {
+					if(err) {
+						return console.log(err);
+					};
+				});
+			});
+
+		});
+		
+	
+
+	});
+
+	$('#Run').on('click',function(){
+		alert("Run!")
+	});
+
 	ipcRenderer.on('project-variables', function (event, projectPath) {
 		if (projectPath == "No project selected") {
 			document.getElementById("ProjectLocation").innerHTML = projectPath;
