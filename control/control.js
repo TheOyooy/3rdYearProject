@@ -1,6 +1,7 @@
 const electron = require('electron');
 const {dialog} = require('electron').remote;
 const fs = require('fs');
+const exec = require('child_process').exec;
 
 const {ipcRenderer} = electron;
 
@@ -149,7 +150,22 @@ $( document ).ready(function(){
 	});
 
 	$('#Run').on('click',function(){
-		alert("Run!")
+		disableButtons();
+		//alert(command)
+
+		exec('./gp2c Program.gp2 Graph.host', {cwd: document.getElementById("ProjectLocation").innerHTML}, function (err, stdout, stderr) {
+			if (err){
+				enableButtons();
+				alert("Error");
+			} else {
+				enableButtons();
+				alert("Success")
+			}
+		});
+		//execFile(document.getElementById("ProjectLocation").innerHTML + '/gp2c', ['Program.gp2', 'Graph.host'], shell = true, function (err, stdout, stderr) {
+
+
+		//});
 	});
 
 	ipcRenderer.on('project-variables', function (event, projectPath) {
