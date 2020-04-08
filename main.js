@@ -157,11 +157,18 @@ app.on('ready', function(){
 
 	});
 
+	ipcMain.on('get-compiler-location', (event) => {
+		setCompilerLocation();
+	});
 
 	ipcMain.on('new-rule', (event) => {
 		newRuleWindow.close();
 		controlWindow.webContents.send('update-rules');
 
+	});
+
+	ipcMain.on('compiler-location-set', (event) => {
+		compilerLocationWindow.close();
 	});
 
 	ipcMain.on('open-project', (event, projectPath) => {
@@ -204,7 +211,7 @@ const mainMenuTemplate = [
 			{
 				label: 'Change Compiler Location',
 				click(){
-					mainWindow.webContents.send('item:clear');
+					setCompilerLocation();
 				}
 			},
 			{
@@ -268,3 +275,22 @@ function openProject(){
 	controlWindow.webContents.send('open-project');
 
 };
+
+function setCompilerLocation(){
+	compilerLocationWindow = new BrowserWindow({
+		width: 470,
+		height: 400,
+		webPreferences:{
+			nodeIntegration: true
+		}
+	});
+	compilerLocationWindow.loadURL(url.format({
+		pathname: path.join(__dirname, 'control/compilerLocation.html'),
+		protocol: 'file',
+		slashes: true,
+		node: {
+			__dirname: false,
+			__filename: false
+		}
+	}));
+}

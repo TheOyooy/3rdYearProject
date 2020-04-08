@@ -2,6 +2,7 @@ const electron = require('electron');
 const {dialog} = require('electron').remote;
 const fs = require('fs');
 const exec = require('child_process').exec;
+const pathModule = require('path');
 
 const {ipcRenderer} = electron;
 
@@ -93,7 +94,7 @@ $( document ).ready(function(){
 		});
 
 		//Promise to get all of the rules and add it to the end of completeProgram
-		let getRules = new Promise ((resolve,reject) => {
+		let getRules = new Promise((resolve,reject) => {
 			fs.readFile(document.getElementById("ProjectLocation").innerHTML + "/RuleList.txt", 'utf-8', (err, data) => {
 				if(err){
 					alert("An error ocurred fetching the program:" + err.message);
@@ -150,18 +151,85 @@ $( document ).ready(function(){
 	});
 
 	$('#Run').on('click',function(){
-		disableButtons();
-		//alert(command)
+		
+		function getCompilerLocation() {
+			return new Promise((resolve,reject) => {
+				fs.exists(pathModule.join(__dirname, 'compilerLocation.txt'), (exists) => {
+					if (exists) {
+					fs.readFile(pathModule.join(__dirname, 'compilerLocation.txt'), 'utf-8', (err, data) => {
+						locations = data.toString().split("\n");
+						install = locations[0];
+						source = locations[1];
+						alert("Got location")
+						resolve();
 
-		exec('./gp2c Program.gp2 Graph.host', {cwd: document.getElementById("ProjectLocation").innerHTML}, function (err, stdout, stderr) {
-			if (err){
-				enableButtons();
-				alert("Error");
-			} else {
-				enableButtons();
-				alert("Success")
-			}
+					});
+					} else {
+						alert("Couldn't get location")
+						reject();
+						ipcRenderer.send('get-compiler-location');
+						
+
+					};
+				});
+
+			});
+		}
+		//"/home/patrick/Documents/3rdYearProject/GP2/Compiler"
+		//"/home/patrick/Documents/3rdYearProject/GP2/GP2-master/Compiler"
+		install = "aaa";
+		source = "aaa";
+
+		function createGp2c() {
+			return new Promise((resolve,reject) => {
+				disableButtons();
+				contents = '#!/bin/bash \ninstall_dir="' + install + '" \nsource_dir="' + source + '" \necho "1. Making Code Directory" \necho "		mkdir -p ./gp2_code_temp" \nmkdir -p ./gp2_code_temp \necho "" \necho "2. Executing GP2 Compiler on $1" \necho "		$install_dir/bin/gp2 -o ./gp2_code_temp $1" \n$install_dir/bin/gp2 -o ./gp2_code_temp $1 \necho "" \necho "3. Coping GP2 Library Files" \necho "		cp $source_dir/gp2-1.0/lib/*.{c,h} ./gp2_code_temp/" \ncp $source_dir/gp2-1.0/lib/*.{c,h} ./gp2_code_temp/ \necho "		cp $source_dir/lib/*.{c,h} ./gp2_code_temp/" \ncp $source_dir/lib/*.{c,h} ./gp2_code_temp/ \necho "" \necho "4. Building GP2 Executable" \necho "		make -C gp2_code_temp" \nmake -C gp2_code_temp \necho "" \necho "5. Executing on Host Graph $2" \necho "		gp2_code_temp/gp2run $2" \ngp2_code_temp/gp2run $2 \necho "" \necho "6. Removing code & executable & log" \necho "		rm -r -f gp2_code_temp ; rm -f gp2.log" \nrm -r -f gp2_code_temp ; rm -f gp2.log \necho "" \necho "Final Result (stored in gp2.output) is:" \necho "		cat gp2.output" \ncat gp2.output'
+				fs.writeFile(document.getElementById("ProjectLocation").innerHTML + "/gp2c" , contents, function(err) {
+					if(err) {
+						reject(err);
+					};
+					resolve();
+				});
+
+			});
+		}
+
+		function makeGp2cRunnable() {
+			return new Promise((resolve,reject) => {
+				exec('chmod u+x gp2c', {cwd: document.getElementById("ProjectLocation").innerHTML}, function (err, stdout, stderr) {
+					if (err){
+						alert("Could not make gp2c runnable");
+						resolve();
+					} else {
+						resolve();
+					}
+				});
+
+			});
+		}
+
+		getCompilerLocation().then(() => {
+			createGp2c().then(() => {
+				makeGp2cRunnable().then(() => {
+					exec('./gp2c Program.gp2 Graph.host', {cwd: document.getElementById("ProjectLocation").innerHTML}, function (err, stdout, stderr) {
+						if (err){
+							enableButtons();
+							alert("Could not run gp2c");
+						} else {
+							enableButtons();
+							alert("Success")
+						}
+					});
+	
+				});
+				
+	
+			});
+
+		}, () => {
 		});
+		
+		
 		//execFile(document.getElementById("ProjectLocation").innerHTML + '/gp2c', ['Program.gp2', 'Graph.host'], shell = true, function (err, stdout, stderr) {
 
 
