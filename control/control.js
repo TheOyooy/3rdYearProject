@@ -217,7 +217,7 @@ $( document ).ready(function(){
 							alert("Could not run gp2c");
 						} else {
 							enableButtons();
-							alert("Success")
+							ipcRenderer.send('show-output', document.getElementById("ProjectLocation").innerHTML);
 						}
 					});
 	

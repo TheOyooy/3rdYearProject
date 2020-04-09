@@ -157,6 +157,28 @@ app.on('ready', function(){
 
 	});
 
+	ipcMain.on('show-output', (event, projectPath) => {
+		outputGraphWindow = new BrowserWindow({
+			width,
+			height,
+			webPreferences:{
+				nodeIntegration: true
+			}
+		});
+		outputGraphWindow.loadURL(url.format({
+			pathname: path.join(__dirname, 'editor/gp2Code/outputGraph.html'),
+			protocol: 'file',
+			slashes: true,
+			node: {
+				__dirname: false,
+				__filename: false
+			}
+		}));
+		outputGraphWindow.webContents.on('did-finish-load', () => {
+			outputGraphWindow.webContents.send('project-path', projectPath);
+		});
+	});
+
 	ipcMain.on('get-compiler-location', (event) => {
 		setCompilerLocation();
 	});
