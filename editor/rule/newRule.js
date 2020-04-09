@@ -23,8 +23,9 @@ $( document ).ready(function(){
 			if(err) {
 				return console.log(err);
 			};
+			ipcRenderer.send('new-rule');
 		});
-		ipcRenderer.send('new-rule')
+		
 
 
 	});
