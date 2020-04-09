@@ -5,3 +5,7 @@ Commands needed to set up
 npm init
 
 npm install --save-dev electron
+
+Command to run the program:
+
+npm start
