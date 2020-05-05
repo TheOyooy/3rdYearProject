@@ -78,8 +78,7 @@ $( document ).ready(function(){
 		console.log("File succesfully deleted");
 	});
 
-	$('#Build').on('click',function(){
-		
+	$('#Build').on('click',function(){		
 		//Promise to get the program code and store it in completeProgram
 		let getProgram = new Promise ((resolve,reject) => {
 			fs.readFile(document.getElementById("ProjectLocation").innerHTML + "/Program.txt", 'utf-8', (err, data) => {
@@ -125,7 +124,6 @@ $( document ).ready(function(){
 		var readARule = function(ruleName) {
 			return new Promise(function(resolve, reject) {
 				fs.readFile(document.getElementById("ProjectLocation").innerHTML + "/" + ruleName + ".rule", 'utf-8', (err, ruleText) => {
-					//alert(ruleText);
 					rulesCombined = rulesCombined.concat("\n\n", ruleText.toString());
 					
 					resolve();
@@ -175,10 +173,8 @@ $( document ).ready(function(){
 
 			});
 		}
-		//"/home/patrick/Documents/3rdYearProject/GP2/Compiler"
-		//"/home/patrick/Documents/3rdYearProject/GP2/GP2-master/Compiler"
-		install = "aaa";
-		source = "aaa";
+		//install = "Error";
+		//source = "Error";
 
 		function createGp2c() {
 			return new Promise((resolve,reject) => {
@@ -228,12 +224,6 @@ $( document ).ready(function(){
 
 		}, () => {
 		});
-		
-		
-		//execFile(document.getElementById("ProjectLocation").innerHTML + '/gp2c', ['Program.gp2', 'Graph.host'], shell = true, function (err, stdout, stderr) {
-
-
-		//});
 	});
 
 	ipcRenderer.on('project-variables', function (event, projectPath) {
@@ -280,7 +270,6 @@ function disableButtons(){
 }
 
 function enableButtons(){
-
 	document.getElementById("EditGraphGP2").disabled = false;
 	document.getElementById("EditProgram").disabled = false;
 	document.getElementById("EditRuleGP2").disabled = false;
@@ -291,6 +280,7 @@ function enableButtons(){
 }
 
 function updateRules(){
+	//Read rule list
 	fs.readFile(document.getElementById("ProjectLocation").innerHTML + "/RuleList.txt", 'utf-8', (err, data) => {
 		if(err){
 			alert("An error ocurred fetching the rules:" + err.message);

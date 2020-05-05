@@ -7,9 +7,10 @@ const {app, BrowserWindow, Menu, ipcMain, screen} = electron
 
 
 app.on('ready', function(){
+	//set dimensions for fullscreen windows
     const { width, height } = screen.getPrimaryDisplay().workAreaSize
     
-
+	//Open the control window on program start
 	controlWindow = new BrowserWindow({
 		width: 800,
 		height: 600,
@@ -26,13 +27,14 @@ app.on('ready', function(){
 		controlWindow.webContents.send('project-variables', "No project selected");
 	});
 
+
 	ipcMain.on('open-graph-window', (event) => {
 		graphWindow = new BrowserWindow({
 			width,
 			height,
-			//webPreferences:{
-			//	nodeIntegration: true
-			//}
+			webPreferences:{
+				nodeIntegration: true
+			}
 		});
 		graphWindow.loadURL(url.format({
 			pathname: path.join(__dirname, 'editor/index.html'),
@@ -95,9 +97,9 @@ app.on('ready', function(){
 		ruleWindow = new BrowserWindow({
 			width,
 			height,
-			//webPreferences:{
-			//	nodeIntegration: true
-			//}
+			webPreferences:{
+				nodeIntegration: true
+			}
 		});
 		ruleWindow.loadURL(url.format({
 			pathname: path.join(__dirname, 'editor/rule/index.html'),
@@ -254,7 +256,7 @@ if(process.platform == 'darwin'){
 	mainMenuTemplate.unshift({});
 };
 
-//Add developer tools item if not in prod
+//Add developer tools items
 if(process.env.NODE_ENV !== 'production'){
 	mainMenuTemplate.push({
 		label: 'Developer Tools',
