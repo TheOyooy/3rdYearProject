@@ -32,9 +32,9 @@ app.on('ready', function(){
 		graphWindow = new BrowserWindow({
 			width,
 			height,
-			webPreferences:{
-				nodeIntegration: true
-			}
+			//webPreferences:{
+			//	nodeIntegration: true
+			//}
 		});
 		graphWindow.loadURL(url.format({
 			pathname: path.join(__dirname, 'editor/index.html'),
@@ -97,9 +97,9 @@ app.on('ready', function(){
 		ruleWindow = new BrowserWindow({
 			width,
 			height,
-			webPreferences:{
-				nodeIntegration: true
-			}
+			//webPreferences:{
+			//	nodeIntegration: true
+			//}
 		});
 		ruleWindow.loadURL(url.format({
 			pathname: path.join(__dirname, 'editor/rule/index.html'),
